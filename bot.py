@@ -50,7 +50,7 @@ async def on_ready():
     log.info('--------')
 
 
-def response_monitor(r):
+async def response_monitor(r):
     if r > 20:
         # 20 or more no responses from server.
         print('its dead jim')
