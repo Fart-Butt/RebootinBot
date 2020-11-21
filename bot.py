@@ -5,9 +5,11 @@ from secrets import bot_key
 import discord
 from discord.ext.commands import Bot
 from cogs.minecraft_rebooter import MinecraftCrap
+
 intents = discord.Intents.default()
 intents.members = True
 LOGDIR = Path('logs')
+
 
 def setup_logger() -> logging.Logger:
     """Create and return the master Logger object."""
@@ -27,9 +29,11 @@ def setup_logger() -> logging.Logger:
     logger.addHandler(file_log)
     return logger
 
+
 log = setup_logger()
 
 bot = Bot(description="a bot for minecraft", command_prefix="&", pm_help=False, intents=intents)
+
 
 @bot.event
 async def on_ready():
@@ -39,6 +43,7 @@ async def on_ready():
     log.info('You are running Rebootin Butt 0.0.1')
     log.info('Created by Poop Poop')
     log.info('--------')
+
 
 bot.add_cog(MinecraftCrap(bot))
 bot.run(bot_key)
