@@ -14,8 +14,7 @@ class MinecraftCrap(Cog):
     async def reboot(self, ctx: Context, *args):
         """reboot - trust authorized rebooter"""
         subprocess.run(
-            ["screen",
-             "-dmS rebooter /home/taffer/minecraft/Valhelsia_Server-2.2.10/restart.sh"]
+            ["screen -dmS rebooter /home/taffer/minecraft/Valhelsia_Server-2.2.10/restart.sh"]
         )
         print("yes")
         pass
@@ -28,5 +27,7 @@ class MinecraftCrap(Cog):
 
 
     @command()
-    async def start(self, ctx: Context, *args):
-        pass
+    async def test(self, ctx: Context, *args):
+        subprocess.run(
+            ["screen -dmS rebooter /home/taffer/minecraft/Valhelsia_Server-2.2.10/restart.sh"]
+        )
