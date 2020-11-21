@@ -28,6 +28,4 @@ class MinecraftCrap(Cog):
 
     @command()
     async def test(self, ctx: Context, *args):
-        subprocess.run(
-            ["screen", "-d", "-m", "-S", "rebooter", "/home/taffer/minecraft/Valhelsia_SERVER-2.2.10/restart.sh"]
-        )
+        pass
