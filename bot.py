@@ -79,34 +79,17 @@ async def minecraft_server_monitor():
                 log.debug("found online players: %s" % players)
                 if response_counter > 0:
                     response_counter = 0  # reset counter
-                    await do_send_message(channel, "The server's back up, nerds")
+                    await do_send_message(bot.get_channel(154337182717444096), "The server's back up, nerds")
 
                 server_state = 1
-        except TimeoutError:
+        except Exception:
             if response_counter == 0:
-                await do_send_message(channel, "I think the server took a shit")
+                await do_send_message(bot.get_channel(154337182717444096), "I think the server took a shit")
             response_counter += 1
             log.debug("server offline, counter is %d" % response_counter)
             if not server_state == 2:
                 server_state = response_monitor(response_counter)
 
-        except socket.timeout:
-            if response_counter == 0:
-                await do_send_message(channel, "I think the server took a shit")
-            response_counter += 1
-            log.debug("server offline, counter is %d" % response_counter)
-            if not server_state == 2:
-                server_state = response_monitor(response_counter)
-
-        except ConnectionRefusedError:
-            if response_counter == 0:
-                await do_send_message(channel, "I think the server took a shit")
-            response_counter += 1
-            log.debug("server offline, counter is %d" % response_counter)
-            if not server_state == 2:
-                server_state = response_monitor(response_counter)
-
-channel=bot.get_channel(154337182717444096)
 bot.add_cog(MinecraftCrap(bot))
 socket.setdefaulttimeout(5)
 bot.loop.create_task(minecraft_server_monitor())
