@@ -51,7 +51,7 @@ async def on_ready():
 
 
 async def response_monitor(r):
-    if r > 20:
+    if r >= 20:
         # 20 or more no responses from server.
         print('its dead jim')
         subprocess.run(
