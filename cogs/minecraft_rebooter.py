@@ -1,8 +1,9 @@
 import logging
 import asyncio
 import subprocess
-from discord.ext.commands import Bot, Cog, Context, command, BucketType
+from discord.ext.commands import Cog, Context, command
 from library import *
+from common import bot
 
 logging = logging.getLogger('bot.' + __name__)
 
@@ -13,6 +14,7 @@ class MinecraftCrap(Cog):
     @authorized_rebooter()
     async def reboot(self, ctx: Context, *args):
         """reboot - trust authorized rebooter"""
+        await do_send_message(bot.get_channel(154337182717444096), "rebooting now")
         subprocess.run(
             ["screen", "-d", "-m", "-S", "rebooter", "/home/taffer/minecraft/Valhelsia_SERVER-2.2.10/restart.sh"]
         )
@@ -24,7 +26,6 @@ class MinecraftCrap(Cog):
         """reboot - vote"""
         print("time to vote lolx")
         pass
-
 
     @command()
     async def test(self, ctx: Context, *args):
