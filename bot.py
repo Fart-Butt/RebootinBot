@@ -55,7 +55,7 @@ async def response_monitor(r):
         # 20 or more no responses from server.
         print('its dead jim')
         subprocess.run(
-            ["./home/taffer/minecraft/Valhelsia_SERVER-2.2.10/start.sh"]
+            ["sh", "./home/taffer/minecraft/Valhelsia_SERVER-2.2.10/start.sh"]
         )
         await do_send_message(bot.get_channel(154337182717444096), "I'm rebooting this POS now")
         # lock server in restart mode so monitor does not attempt to start a new instance
@@ -89,6 +89,7 @@ async def minecraft_server_monitor():
             log.debug("server offline, counter is %d" % response_counter)
             if not server_state == 2:
                 server_state = await response_monitor(response_counter)
+
 
 bot.add_cog(MinecraftCrap(bot))
 socket.setdefaulttimeout(5)
