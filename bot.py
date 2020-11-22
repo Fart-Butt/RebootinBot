@@ -1,18 +1,15 @@
 import datetime
 import logging
 from pathlib import Path
-from secrets import bot_key, command_prefix, server_rcon_info
-import discord
+from secrets import bot_key, server_rcon_info
 import asyncio
-from discord.ext.commands import Bot
 from cogs.minecraft_rebooter import MinecraftCrap
 from mcrcon import MCRcon
 import socket
 from library import do_send_message
 import subprocess
+from common import bot
 
-intents = discord.Intents.default()
-intents.members = True
 LOGDIR = Path('logs')
 
 
@@ -37,8 +34,6 @@ def setup_logger() -> logging.Logger:
 
 log = setup_logger()
 
-bot = Bot(description="a bot for minecraft", command_prefix=command_prefix, pm_help=False, intents=intents)
-
 
 @bot.event
 async def on_ready():
@@ -55,7 +50,7 @@ async def response_monitor(r):
         # 20 or more no responses from server.
         print('its dead jim')
         subprocess.run("/home/taffer/minecraft/Valhelsia_SERVER-2.2.10/start.sh", shell=True
-        )
+                       )
         await do_send_message(bot.get_channel(154337182717444096), "I'm rebooting this POS now")
         # lock server in restart mode so monitor does not attempt to start a new instance
         return 2
