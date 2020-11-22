@@ -55,7 +55,7 @@ async def response_monitor(r):
         # 20 or more no responses from server.
         print('its dead jim')
         subprocess.run(
-            ["/home/taffer/minecraft/Valhelsia_SERVER-2.2.10/start.sh"]
+            ["bash", "/home/taffer/minecraft/Valhelsia_SERVER-2.2.10/start.sh"]
         )
         await do_send_message(154337182717444096, "I'm rebooting this POS now")
         # lock server in restart mode so monitor does not attempt to start a new instance
