@@ -88,7 +88,7 @@ async def minecraft_server_monitor():
             response_counter += 1
             log.debug("server offline, counter is %d" % response_counter)
             if not server_state == 2:
-                server_state = response_monitor(response_counter)
+                server_state = await response_monitor(response_counter)
 
 bot.add_cog(MinecraftCrap(bot))
 socket.setdefaulttimeout(5)
