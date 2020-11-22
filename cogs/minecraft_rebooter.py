@@ -24,6 +24,7 @@ class MinecraftCrap(Cog):
     @reboot.error
     async def reboot_vote(self, ctx: Context, *args):
         """reboot - vote"""
+        await do_send_message(bot.get_channel(154337182717444096), "youre not my real dad")
         print("time to vote lolx")
         pass
 
