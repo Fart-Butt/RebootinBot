@@ -57,7 +57,7 @@ async def response_monitor(r):
         subprocess.run(
             ["bash", "/home/taffer/minecraft/Valhelsia_SERVER-2.2.10/start.sh"]
         )
-        await do_send_message(154337182717444096, "I'm rebooting this POS now")
+        await do_send_message(bot.get_channel(154337182717444096), "I'm rebooting this POS now")
         # lock server in restart mode so monitor does not attempt to start a new instance
         return 2
     else:
