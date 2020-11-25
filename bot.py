@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 from secrets import bot_key, server_rcon_info
 import asyncio
-from cogs.minecraft_rebooter import MinecraftCrap
+from cogs.minecraft import MinecraftCrap
 from mcrcon import MCRcon
 import socket
 from library import do_send_message

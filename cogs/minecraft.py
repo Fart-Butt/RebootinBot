@@ -1,9 +1,12 @@
 import logging
 import asyncio
 import subprocess
-from discord.ext.commands import Cog, Context, command
+from discord.ext.commands import Cog, Context, command, BucketType
+from discord.ext import commands
 from library import *
 from common import bot
+from mcrcon import MCRcon
+from secrets import server_rcon_info
 
 logging = logging.getLogger('bot.' + __name__)
 
@@ -31,3 +34,14 @@ class MinecraftCrap(Cog):
     @command()
     async def test(self, ctx: Context, *args):
         pass
+
+    @command()
+    @commands.cooldown(1, 30, BucketType.guild)
+    async def online(self, ctx: Context, *args):
+        with MCRcon(server_rcon_info['ip'], server_rcon_info['password']) as m:
+            resp = m.command("/list")
+            players = resp.split(": ")[1].split(", ")
+            if len(players) > 0:
+                await do_send_message(bot.get_channel(154337182717444096), "online players: %s" % ", ".join(players))
+            else:
+                await do_send_message(bot.get_channel(154337182717444096), "no ones home")
