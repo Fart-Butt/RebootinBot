@@ -74,11 +74,19 @@ async def minecraft_server_monitor():
                 if response_counter > 0:
                     response_counter = 0  # reset counter
                     await do_send_message(bot.get_channel(154337182717444096), "The server's back up, nerds")
-
                 server_state = 1
+
         except Exception:
             if response_counter == 0:
-                await do_send_message(bot.get_channel(154337182717444096), "I think the server took a shit")
+                reboot_monitor_file = Path("/home/taffer/minecraft/Valhelsia_SERVER-2.2.10/reboot.txt")
+                if reboot_monitor_file.exists():
+                    # this is likely a scheduled reboot, we will mute the channel message but continue
+                    # as normal to catch reboot issues
+                    # lets delete the file to acknowledge the reboot
+                    reboot_monitor_file.unlink()
+                else:
+                    # probably not a scheduled reboot
+                    await do_send_message(bot.get_channel(154337182717444096), "I think the server took a shit")
             response_counter += 1
             log.debug("server offline, counter is %d" % response_counter)
             if not server_state == 2:
