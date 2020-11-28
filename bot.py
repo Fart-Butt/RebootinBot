@@ -9,6 +9,7 @@ import socket
 from library import do_send_message
 import subprocess
 from common import bot
+import os
 
 LOGDIR = Path('logs')
 
@@ -83,9 +84,11 @@ async def minecraft_server_monitor():
                     # this is likely a scheduled reboot, we will mute the channel message but continue
                     # as normal to catch reboot issues
                     # lets delete the file to acknowledge the reboot
-                    reboot_monitor_file.unlink()
+                    log.debug("reboot detected")
+                    os.remove("/home/taffer/minecraft/Valhelsia_SERVER-2.2.10/reboot.txt")
                 else:
                     # probably not a scheduled reboot
+                    log.debug("think the server crashed")
                     await do_send_message(bot.get_channel(154337182717444096), "I think the server took a shit")
             response_counter += 1
             log.debug("server offline, counter is %d" % response_counter)
