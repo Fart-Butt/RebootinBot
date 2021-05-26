@@ -1,9 +1,12 @@
 import datetime
 import logging
 from pathlib import Path
+
+import secrets
 from secrets import bot_key, server_rcon_info
 import asyncio
 from cogs.minecraft import MinecraftCrap
+from cogs.stationeers import Stationeers
 from mcrcon import MCRcon
 import socket
 from library import do_send_message
@@ -96,7 +99,11 @@ async def minecraft_server_monitor():
                 server_state = await response_monitor(response_counter)
 
 
-bot.add_cog(MinecraftCrap(bot))
+if secrets.minecraft == 1:
+    bot.add_cog(MinecraftCrap(bot))
+if secrets.stationeers == 1:
+    bot.add_cog(Stationeers)
+
 socket.setdefaulttimeout(5)
 bot.loop.create_task(minecraft_server_monitor())
 bot.run(bot_key)
