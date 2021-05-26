@@ -102,7 +102,7 @@ async def minecraft_server_monitor():
 if secrets.minecraft == 1:
     bot.add_cog(MinecraftCrap(bot))
 if secrets.stationeers == 1:
-    bot.add_cog(Stationeers)
+    bot.add_cog(Stationeers(bot))
 
 socket.setdefaulttimeout(5)
 bot.loop.create_task(minecraft_server_monitor())
