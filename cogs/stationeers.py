@@ -14,8 +14,7 @@ class Stationeers(Cog):
     async def stationeers(self, ctx: Context, *args):
         """reboot - trust authorized rebooter"""
         await do_send_message(bot.get_channel(154337182717444096), "rebooting now")
-        subprocess.run(
-            ["screen", "-d", "-m", "-S", "stationeers", "sh", "/home/taffer/stationeers/resume_mars.sh"]
-        )
+        subprocess.run("/home/taffer/stationeers/resume_mars.sh", shell=True
+                       )
         print("yes")
         pass
