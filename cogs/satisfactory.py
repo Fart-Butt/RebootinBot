@@ -27,3 +27,10 @@ class Satisfactory(Cog):
         await do_send_message(bot.get_channel(154337182717444096), "youre not my real dad")
         print("time to vote lolx")
         pass
+
+    @command()
+    @authorized_rebooter()
+    async def satistest(self, ctx: Context, *args):
+        subprocess.run(
+            ["sudo", "-u", "sfserver", "echo", "test"]
+        )
