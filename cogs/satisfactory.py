@@ -16,7 +16,7 @@ class Satisfactory(Cog):
         """reboot - trust authorized rebooter"""
         await do_send_message(bot.get_channel(154337182717444096), "rebooting satisfactory server now")
         subprocess.run(
-            ["sudo", "-u", "sfserver", "/home/sfserver/sfserver", "start"]
+            ["sudo", "-u", "sfserver", "/home/sfserver/sfserver", "monitor"]
         )
         print("yes")
         pass
