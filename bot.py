@@ -7,6 +7,7 @@ from secrets import bot_key, server_rcon_info
 import asyncio
 from cogs.minecraft import MinecraftCrap
 from cogs.stationeers import Stationeers
+from cogs.satisfactory import Satisfactory
 from mcrcon import MCRcon
 import socket
 from library import do_send_message
@@ -104,6 +105,8 @@ if secrets.minecraft == 1:
     bot.loop.create_task(minecraft_server_monitor())
 if secrets.stationeers == 1:
     bot.add_cog(Stationeers(bot))
+if secrets.satisfactory == 1:
+    bot.add_cog(Satisfactory(bot))
 
 
 socket.setdefaulttimeout(5)
