@@ -45,7 +45,7 @@ async def on_ready():
     log.info('Use this link to invite {}:'.format(bot.user.name))
     log.info('https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=8'.format(bot.user.id))
     log.info('--------')
-    log.info('You are running Rebootin Butt 0.1.0')
+    log.info('You are running Rebootin Butt 0.2.0')
     log.info('Created by Poop Poop')
     log.info('--------')
 
@@ -54,7 +54,7 @@ async def response_monitor(r):
     if r >= 20:
         # 20 or more no responses from server.
         print('its dead jim')
-        subprocess.run("/home/taffer/minecraft/Valhelsia_SERVER-2.2.10/start.sh", shell=True
+        subprocess.run("/home/taffer/minecraft/progress/start.sh", shell=True
                        )
         await do_send_message(bot.get_channel(154337182717444096), "I'm rebooting this POS now")
         # lock server in restart mode so monitor does not attempt to start a new instance
@@ -83,13 +83,13 @@ async def minecraft_server_monitor():
 
         except Exception:
             if response_counter == 0:
-                reboot_monitor_file = Path("/home/taffer/minecraft/Valhelsia_SERVER-2.2.10/reboot.txt")
+                reboot_monitor_file = Path("/home/taffer/minecraft/progress/reboot.txt")
                 if reboot_monitor_file.exists():
                     # this is likely a scheduled reboot, we will mute the channel message but continue
                     # as normal to catch reboot issues
                     # lets delete the file to acknowledge the reboot
                     log.debug("reboot detected")
-                    os.remove("/home/taffer/minecraft/Valhelsia_SERVER-2.2.10/reboot.txt")
+                    os.remove("/home/taffer/minecraft/progress/reboot.txt")
                 else:
                     # probably not a scheduled reboot
                     log.debug("think the server crashed")
@@ -101,13 +101,12 @@ async def minecraft_server_monitor():
 
 
 if secrets.minecraft == 1:
-    bot.add_cog(MinecraftCrap(bot))
+    # bot.add_cog(MinecraftCrap(bot))
     bot.loop.create_task(minecraft_server_monitor())
 if secrets.stationeers == 1:
     bot.add_cog(Stationeers(bot))
 if secrets.satisfactory == 1:
     bot.add_cog(Satisfactory(bot))
-
 
 socket.setdefaulttimeout(5)
 bot.run(bot_key)
