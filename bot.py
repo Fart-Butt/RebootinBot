@@ -78,7 +78,7 @@ async def minecraft_server_monitor():
                 log.debug("found online players: %s" % players)
                 if response_counter > 0:
                     response_counter = 0  # reset counter
-                    await do_send_message(bot.get_channel(154337182717444096), "The server's back up, nerds")
+                    await do_send_message(bot.get_channel(154337182717444096), "The server is back up, nerds")
                 server_state = 1
 
         except Exception:
