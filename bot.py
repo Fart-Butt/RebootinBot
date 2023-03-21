@@ -62,7 +62,7 @@ async def response_monitor(r):
         return 0
 
 
-def do_exception(server_state, response_counter):
+async def do_exception(server_state, response_counter):
     if response_counter == 0:
         reboot_monitor_file = Path("/home/taffer/minecraft/progress/reboot.txt")
         if reboot_monitor_file.exists():
