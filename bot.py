@@ -1,14 +1,13 @@
-import datetime
+
 import logging
 from pathlib import Path
 
 import secrets
-from secrets import bot_key, server_rcon_info
+from secrets import bot_key
 import asyncio
 from cogs.minecraft import MinecraftCrap
 from cogs.stationeers import Stationeers
 from cogs.satisfactory import Satisfactory
-import socket
 from library import do_send_message
 import subprocess
 from common import bot
