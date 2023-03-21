@@ -13,6 +13,14 @@ from library import do_send_message
 import subprocess
 from common import bot
 import os
+import datetime
+import http.client
+import json
+import urllib.error
+import urllib.request
+import logging
+import socket
+
 
 LOGDIR = Path('logs')
 
@@ -91,7 +99,7 @@ async def minecraft_server_monitor():
         await asyncio.sleep(10)
         log.debug("running server monitor")
         try:
-            with urllib.request.urlopen(self.updateurl, None, 5) as url:
+            with urllib.request.urlopen("http://136.32.75.102:8123/up/world/DIM-1/", None, 5) as url:
                 data = json.loads(url.read().decode())
                 pl = data['players']
                 players = []
