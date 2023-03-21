@@ -8,7 +8,6 @@ import asyncio
 from cogs.minecraft import MinecraftCrap
 from cogs.stationeers import Stationeers
 from cogs.satisfactory import Satisfactory
-from mcrcon import MCRcon
 import socket
 from library import do_send_message
 import subprocess
@@ -63,6 +62,26 @@ async def response_monitor(r):
         return 0
 
 
+def do_exception(server_state, response_counter):
+    if response_counter == 0:
+        reboot_monitor_file = Path("/home/taffer/minecraft/progress/reboot.txt")
+        if reboot_monitor_file.exists():
+            # this is likely a scheduled reboot, we will mute the channel message but continue
+            # as normal to catch reboot issues
+            # lets delete the file to acknowledge the reboot
+            log.debug("reboot detected")
+            os.remove("/home/taffer/minecraft/progress/reboot.txt")
+        else:
+            # probably not a scheduled reboot
+            log.debug("think the server crashed")
+            await do_send_message(bot.get_channel(154337182717444096), "I think the server took a shit")
+    response_counter += 1
+    log.debug("server offline, counter is %d" % response_counter)
+    if not server_state == 2:
+        server_state = await response_monitor(response_counter)
+    return server_state, response_counter
+
+
 async def minecraft_server_monitor():
     server_state = 0  # server states: 0= off, 1= on, 2= restarting
     response_counter = 0
@@ -72,32 +91,36 @@ async def minecraft_server_monitor():
         await asyncio.sleep(10)
         log.debug("running server monitor")
         try:
-            with MCRcon(server_rcon_info['ip'], server_rcon_info['password']) as m:
-                resp = m.command("/list")
-                players = resp.split(": ")[1].split(", ")
-                log.debug("found online players: %s" % players)
+            with urllib.request.urlopen(self.updateurl, None, 5) as url:
+                data = json.loads(url.read().decode())
+                pl = data['players']
+                players = []
+                for p in pl:
+                    players.append(p['name'])
+                log.info("playing: %s" % ", ".join(players))
                 if response_counter > 0:
                     response_counter = 0  # reset counter
                     await do_send_message(bot.get_channel(154337182717444096), "The server is back up, nerds")
                 server_state = 1
 
+        except urllib.error.URLError:
+            # minecraft server is offline and buttbot is still online
+            log.warning("scraper lost connection with minecraft server")
+            server_state, response_counter = do_exception(server_state, response_counter)
+
+        except http.client.RemoteDisconnected:
+            # we are going to save all data here too
+            log.warning("scraper lost connection with minecraft server")
+            server_state, response_counter = do_exception(server_state, response_counter)
+
+        except socket.timeout:
+            # we hit the timeout treshold - the minecraft server is probably locked up.
+            log.warning("scraper lost connection with minecraft server")
+            server_state, response_counter = do_exception(server_state, response_counter)
+
         except Exception:
-            if response_counter == 0:
-                reboot_monitor_file = Path("/home/taffer/minecraft/progress/reboot.txt")
-                if reboot_monitor_file.exists():
-                    # this is likely a scheduled reboot, we will mute the channel message but continue
-                    # as normal to catch reboot issues
-                    # lets delete the file to acknowledge the reboot
-                    log.debug("reboot detected")
-                    os.remove("/home/taffer/minecraft/progress/reboot.txt")
-                else:
-                    # probably not a scheduled reboot
-                    log.debug("think the server crashed")
-                    await do_send_message(bot.get_channel(154337182717444096), "I think the server took a shit")
-            response_counter += 1
-            log.debug("server offline, counter is %d" % response_counter)
-            if not server_state == 2:
-                server_state = await response_monitor(response_counter)
+            log.warning("scraper lost connection with minecraft server")
+            server_state, response_counter = do_exception(server_state, response_counter)
 
 
 if secrets.minecraft == 1:
